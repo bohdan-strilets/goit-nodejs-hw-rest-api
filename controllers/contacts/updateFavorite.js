@@ -1,10 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const { updateContact } = require("../../models");
+const { Contact } = require("../../models");
 
-const updateById = router.put("/:contactId", async (req, res, next) => {
+const updateFavorite = async (req, res) => {
   const { contactId } = req.params;
-  const data = await updateContact(contactId, req.body);
+  const { favorite } = req.body;
+
+  const data = await Contact.findByIdAndUpdate(
+    contactId,
+    { favorite },
+    { new: true }
+  );
 
   if (!data) {
     return res.status(404).json({
@@ -18,7 +22,7 @@ const updateById = router.put("/:contactId", async (req, res, next) => {
     return res.status(400).json({
       status: "error",
       code: 400,
-      message: "missing fields",
+      message: "missing field favorite",
     });
   }
 
@@ -27,6 +31,6 @@ const updateById = router.put("/:contactId", async (req, res, next) => {
     code: 200,
     data,
   });
-});
+};
 
-module.exports = updateById;
+module.exports = updateFavorite;
