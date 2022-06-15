@@ -30,16 +30,21 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-const joiSchema = Joi.object({
+const userJoiSchema = Joi.object({
   password: Joi.string().min(6).required(),
   email: Joi.string().required(),
   subscription: Joi.string().valid("starter", "pro", "business"),
   token: Joi.string(),
 });
 
+const subscriptionJoinSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
+});
+
 const User = model("user", userSchema);
 
 module.exports = {
   User,
-  joiSchema,
+  userJoiSchema,
+  subscriptionJoinSchema,
 };
