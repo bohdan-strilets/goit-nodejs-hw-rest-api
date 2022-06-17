@@ -17,14 +17,18 @@ const contactSchema = Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
   },
-  { versionKey: false, timeStamps: true }
+  { versionKey: false, timestamps: true }
 );
 
 const numberPattern =
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
 
-const joiSchema = Joi.object({
+const contactJoiSchema = Joi.object({
   name: Joi.string().min(3).max(30).trim().required(),
   email: Joi.string().email().trim().required(),
   phone: Joi.string().pattern(numberPattern).min(9).max(11).trim().required(),
@@ -39,6 +43,6 @@ const Contact = model("contact", contactSchema);
 
 module.exports = {
   Contact,
-  joiSchema,
+  contactJoiSchema,
   favoriteJoiSchema,
 };
