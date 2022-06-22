@@ -44,12 +44,16 @@ userSchema.methods.comparePassword = function (password) {
 
 const userJoiSchema = Joi.object({
   password: Joi.string().min(6).required(),
-  email: Joi.string().required(),
+  email: Joi.string().email().required(),
   subscription: Joi.string().valid("starter", "pro", "business"),
 });
 
 const subscriptionJoinSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business").required(),
+});
+
+const emailJoiSchema = Joi.object({
+  email: Joi.string().email().required(),
 });
 
 const User = model("user", userSchema);
@@ -58,4 +62,5 @@ module.exports = {
   User,
   userJoiSchema,
   subscriptionJoinSchema,
+  emailJoiSchema,
 };
