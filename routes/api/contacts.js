@@ -6,7 +6,7 @@ const { validation, ctrlWrapper, auth } = require("../../middlewares");
 
 const router = express.Router();
 
-router.get("/", auth, ctrlWrapper(ctrl.getAll));
+router.get("/contacts", auth, ctrlWrapper(ctrl.getAll));
 
 router.get("/:contactId", ctrlWrapper(ctrl.getById));
 

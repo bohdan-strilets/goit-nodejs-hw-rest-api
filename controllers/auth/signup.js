@@ -4,8 +4,10 @@ const gravatar = require("gravatar");
 const { v4 } = require("uuid");
 const { sendEmail } = require("../../helpers");
 
+const { API_URL } = process.env;
+
 const signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   const user = await User.findOne({ email });
 
   if (user) {
@@ -21,6 +23,7 @@ const signup = async (req, res) => {
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
   const result = await User.create({
+    name,
     email,
     password: hashPassword,
     avatarURL,
@@ -32,11 +35,11 @@ const signup = async (req, res) => {
     subject: "Email confirmation.",
     html: `
       <div>
-        <h1>Welcome</h1>
+        <h1>Welcome ${name}</h1>
         <br />
         <p>Thank you for yusing our service.</p>
         <br />
-        <a target="_blank" href="http://localhost:5000/api/user/verify/:${verificationToken}">Finish registration</a>
+        <a target="_blank" href="${API_URL}/api/user/verify/${verificationToken}">Finish registration</a>
       </div>
     `,
   };
@@ -47,10 +50,10 @@ const signup = async (req, res) => {
     status: "succes",
     code: 201,
     user: {
+      name: result.name,
       email: result.email,
       subscription: result.subscription,
       avatarURL,
-      verificationToken,
     },
   });
 };
