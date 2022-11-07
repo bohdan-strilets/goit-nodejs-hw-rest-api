@@ -22,7 +22,7 @@ const updateFavorite = async (req, res) => {
     return res.status(400).json({
       status: "error",
       code: 400,
-      message: "missing field favorite",
+      message: "Missing field favorite",
     });
   }
 

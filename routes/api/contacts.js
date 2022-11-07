@@ -8,20 +8,22 @@ const router = express.Router();
 
 router.get("/", auth, ctrlWrapper(ctrl.getAll));
 
-router.get("/:contactId", ctrlWrapper(ctrl.getById));
+router.get("/:contactId", auth, ctrlWrapper(ctrl.getById));
 
-router.post("/", auth, validation(contactJoiSchema), ctrlWrapper(ctrl.add));
+router.post("/add", auth, validation(contactJoiSchema), ctrlWrapper(ctrl.add));
 
-router.delete("/:contactId", ctrlWrapper(ctrl.deleteById));
+router.delete("/delete/:contactId", auth, ctrlWrapper(ctrl.deleteById));
 
 router.put(
-  "/:contactId",
+  "/edit/:contactId",
+  auth,
   validation(contactJoiSchema),
   ctrlWrapper(ctrl.updateById)
 );
 
 router.patch(
   "/:contactId/favorite",
+  auth,
   validation(favoriteJoiSchema),
   ctrlWrapper(ctrl.updateFavorite)
 );

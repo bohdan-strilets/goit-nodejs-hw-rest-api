@@ -7,7 +7,7 @@ const getAll = async (req, res) => {
   if (favorite) {
     const favoriteData = await Contact.find({ owner: _id, favorite: true });
 
-    res.json({
+    return res.json({
       favoriteData,
     });
   }
@@ -17,7 +17,7 @@ const getAll = async (req, res) => {
     "_id email subscription"
   );
 
-  res.json({
+  return res.json({
     status: "success",
     code: 200,
     data: {
