@@ -9,9 +9,11 @@ const contactSchema = Schema(
     },
     email: {
       type: String,
+      default: "email@example.com",
     },
     phone: {
       type: String,
+      required: true,
     },
     favorite: {
       type: Boolean,
@@ -30,8 +32,8 @@ const numberPattern =
 
 const contactJoiSchema = Joi.object({
   name: Joi.string().min(3).max(30).trim().required(),
-  email: Joi.string().email().trim().required(),
-  phone: Joi.string().pattern(numberPattern).min(9).max(11).trim().required(),
+  email: Joi.string().email().trim().allow(""),
+  phone: Joi.string().pattern(numberPattern).min(9).max(16).trim().required(),
   favorite: Joi.bool(),
 });
 

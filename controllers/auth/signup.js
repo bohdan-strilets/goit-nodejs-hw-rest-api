@@ -3,8 +3,9 @@ const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
 const { v4 } = require("uuid");
 const { sendEmail } = require("../../helpers");
+const jwt = require("jsonwebtoken");
 
-const { API_URL } = process.env;
+const { API_URL, SECRET_KEY } = process.env;
 
 const signup = async (req, res) => {
   const { email, password, name } = req.body;
@@ -30,6 +31,10 @@ const signup = async (req, res) => {
     verificationToken,
   });
 
+  const payload = { id: result._id };
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "3h" });
+  await User.findByIdAndUpdate(result._id, { token });
+
   const mail = {
     to: email,
     subject: "Email confirmation.",
@@ -49,11 +54,14 @@ const signup = async (req, res) => {
   res.status(201).json({
     status: "succes",
     code: 201,
-    user: {
-      name: result.name,
-      email: result.email,
-      subscription: result.subscription,
-      avatarURL,
+    data: {
+      token,
+      user: {
+        name: result.name,
+        email: result.email,
+        subscription: result.subscription,
+        avatarURL,
+      },
     },
   });
 };
