@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://api-phonebook-app.herokuapp.com" }],
+  "servers": [{ "url": "https://phonebook-api-exp1.onrender.com" }],
   "tags": [
     {
       "name": "Auth",
